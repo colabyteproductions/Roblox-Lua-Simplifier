@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Luiflier - Lua Simplifier</title>
+  <title>Luiflier Lua Simplifier</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -12,6 +12,8 @@
       font-family: Verdana, Arial, Tahoma, sans-serif;
       font-size: 13px;
       color: #222;
+      /* Custom cursor */
+      cursor: url('cursor.png'), auto;
     }
     .navbar {
       width: 100%;
@@ -46,6 +48,7 @@
     .navbar a {
       color: #fff;
       text-decoration: none;
+      cursor: url('cursor.png'), pointer;
     }
     .navbar a:hover, .navbar .active {
       text-decoration: underline;
@@ -97,6 +100,7 @@
       margin-bottom: 12px;
       padding: 5px;
       resize: vertical;
+      cursor: url('cursor.png'), text;
     }
     button, .classic-btn {
       background: #2356a0;
@@ -106,7 +110,7 @@
       font-family: Verdana, Arial, Tahoma, sans-serif;
       font-weight: bold;
       padding: 7px 26px;
-      cursor: pointer;
+      cursor: url('cursor.png'), pointer;
       margin-bottom: 18px;
       box-shadow: 1px 1px #e3e7ef;
       transition: background 0.2s;
@@ -133,6 +137,7 @@
       min-height: 80px;
       margin-top: 3px;
       white-space: pre-wrap;
+      cursor: url('cursor.png'), auto;
     }
     .footer {
       width: 900px;
@@ -184,6 +189,7 @@
     .new-topic-btn {
       float: right;
       margin-top: -8px;
+      cursor: url('cursor.png'), pointer;
     }
     @media (max-width: 950px) {
       .navbar-table,
@@ -203,6 +209,8 @@
   </style>
 </head>
 <body>
+  <!-- Audio for click sound -->
+  <audio id="click-sound" src="https://github.com/colabyteproductions/Roblox-Lua-Simplifier/raw/refs/heads/main/button.wav" preload="auto"></audio>
   <div class="navbar">
     <table class="navbar-table">
       <tr>
@@ -218,12 +226,12 @@
       <td class="main-left"></td>
       <td class="main-center">
         <div id="page-simplifier">
-          <div class="main-title">Lua Code Beautifier</div>
+          <div class="main-title">Lua Code Simplifier</div>
           <label for="input">Paste your Roblox Lua code below:</label>
           <textarea id="input" placeholder="-- Paste your Lua code here"></textarea>
           <br>
-          <button id="beautifyBtn">Beautify</button>
-          <span class="output-label">Beautiful code:</span>
+          <button id="simplifyBtn">Simplify</button>
+          <span class="output-label">Simplified code:</span>
           <div id="output" class="output"></div>
         </div>
         <div id="page-forum" style="display:none;">
@@ -243,7 +251,7 @@
         <div id="page-about" style="display:none;">
           <div class="section-title">About</div>
           <div class="section-content">
-            Luiflier is a retro-inspired Lua code beautifier for Roblox developers, made by Colabyte Productions.<br>
+            Luiflier is a retro-inspired Lua code simplifier for Roblox developers, made by Colabyte Productions.<br>
             The forum uses GitHub Issues, so you can open topics and reply directly on GitHub.<br>
             <br>
             <b>Why "Luiflier"?</b> Lua + Simplifier = Beautiful code!
@@ -253,9 +261,16 @@
     </tr>
   </table>
   <div class="footer">
-    &copy; 2025 Colabyte Productions
+    &copy; 2025 Colabyte Productions &mdash; Classic 2008 Roblox Style
   </div>
   <script>
+    // Play click sound function
+    function playClick() {
+      var audio = document.getElementById('click-sound');
+      audio.currentTime = 0;
+      audio.play();
+    }
+
     // Navigation
     function showPage(pageId) {
       const pages = ['page-simplifier','page-forum','page-about'];
@@ -269,28 +284,26 @@
       });
       if(pageId === 'page-forum') loadForum();
     }
-    document.getElementById('nav-simplifier').onclick = function(){showPage('page-simplifier');}
-    document.getElementById('nav-forum').onclick = function(){showPage('page-forum');}
-    document.getElementById('nav-about').onclick = function(){showPage('page-about');}
+    document.getElementById('nav-simplifier').onclick = function(){playClick(); showPage('page-simplifier');}
+    document.getElementById('nav-forum').onclick = function(){playClick(); showPage('page-forum');}
+    document.getElementById('nav-about').onclick = function(){playClick(); showPage('page-about');}
 
-    // Beautifier logic
-    function beautifyLua(code) {
-      // Remove single-line comments
-      let beautiful = code.replace(/--.*$/gm, '');
-      // Remove multi-line comments
-      beautiful = beautiful.replace(/--\[\[[\s\S]*?\]\]/gm, '');
-      // Remove extra blank lines and trim
-      beautiful = beautiful.replace(/^\s*$(?:\r\n?|\n)/gm, '');
-      beautiful = beautiful.trim();
-      return beautiful;
+    // Simplifier logic
+    function simplifyLua(code) {
+      let simplified = code.replace(/--.*$/gm, '');
+      simplified = simplified.replace(/--\[\[[\s\S]*?\]\]/gm, '');
+      simplified = simplified.replace(/^\s*$(?:\r\n?|\n)/gm, '');
+      simplified = simplified.trim();
+      return simplified;
     }
-    document.getElementById('beautifyBtn').onclick = function() {
+    document.getElementById('simplifyBtn').onclick = function() {
+      playClick();
       const code = document.getElementById('input').value;
       if (!code.trim()) {
         document.getElementById('output').textContent = 'Please paste some Lua code!';
         return;
       }
-      const result = beautifyLua(code);
+      const result = simplifyLua(code);
       document.getElementById('output').textContent = result || '(No output)';
     };
 
