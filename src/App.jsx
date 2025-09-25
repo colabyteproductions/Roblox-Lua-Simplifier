@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { createRoot } from "react-dom/client";
+const { useState } = React;
 
 function App() {
   const [input, setInput] = useState("-- Cole seu código Lua/Roblox aqui\nprint('hello world')");
@@ -34,5 +33,5 @@ function App() {
   );
 }
 
-const root = createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
